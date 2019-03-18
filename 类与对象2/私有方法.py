@@ -4,6 +4,7 @@ class Person:
     def __run(self):
         print("跑步的鱼-------------")
 
+
 p = Person()
 # p.__run()   # AttributeError: 'Person' object has no attribute '__run'
 
