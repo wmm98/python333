@@ -1,6 +1,6 @@
 import numpy as np
-from numpy import mat
 import matplotlib.pyplot as plt
+from numpy import mat
 
 
 def standReges(XArr, yArr):
