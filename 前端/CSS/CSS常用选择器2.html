@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*复合选择器*/
+        div.test1{
+            color: red;
+        }
+
+        div#main{
+            color: blue;
+        }
+        
+        /*群组选择器*/
+        /*可以同时使用多个选择器，多个选择器将同时被应用指定的样式*/
+        /*比如：div,.test1,#box会同时选中页面中div元素，class为test1的元素，id为box元素*/
+        div,span, .test1{
+            border-bottom: 2px solid purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">我是div1</div>
+    <div>我是div2</div>
+    <div class="test1">我是div3</div>
+    <p >我是段落1</p>
+    <p>我是段落2</p>
+    <p class="test1">我是段落3</p>
+    <span>我是span1</span>
+    <span>我是span2</span>
+    <span class="test1">我是span3</span>
+</body>
+</html>

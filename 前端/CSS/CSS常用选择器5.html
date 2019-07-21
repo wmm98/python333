@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*单属性*/
+        div[name]{
+            color:red;
+        }
+
+        div[name="liaoke"]{
+            background-color: aqua;
+        }
+
+
+        /*多属性*/
+        div[name][age]{
+            background-color: darkorange;
+        }
+
+    </style>
+</head>
+<body>
+    <!--div标签能添加任何属性-->
+    <div name="liaoke" age="12">liaoke</div>
+    <div name="itlike" age="79">itlike</div>
+    <div>55555</div>
+</body>
+</html>
