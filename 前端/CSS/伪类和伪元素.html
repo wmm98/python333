@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>伪类和伪元素</title>
+    <style>
+        /*：：first-letter选择指定的第一个单词*/
+        /*：：first-line选择第一行*/
+
+        p{
+            width:300px;
+            background-color:red;
+        }
+
+        /*伪元素*/
+        /*第一个字为伪元素*/
+        p::first-letter{
+            font-size:100px;
+        }
+
+        /*第一行*/
+        p::first-line{
+            color:yellow;
+        }
+
+        /*伪类*/
+        /*鼠标进入第一段的时候有变化*/
+        p.test1:hover{
+            width: 600px;
+            background-color: deepskyblue;
+        }
+
+        /*输入框获得焦点的时候有变化*/
+        input:focus{
+            width:500px;
+            height:50px;
+        }
+
+    </style>
+</head>
+<body>
+    <p class="test1">我是段落我是段落我是段落我是段落我是段落我是段落我是段
+        落我是段落我是段落我是段落我是段落我是段落我是段落我是段落</p>
+    <p>我是段落我是段落我是段落我是段落我是段落我是段落我是段
+        落我是段落我是段落我是段落我是段落我是段落我是段落我是段落</p>
+    <p>我是段落我是段落我是段落我是段落我是段落我是段落我是段
+        落我是段落我是段落我是段落我是段落我是段落我是段落我是段落</p>
+
+    <input type="text">
+</body>
+</html>

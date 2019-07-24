@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <style>
+
+
+        /*1+100=101*/
+        p#box{
+            color:yellow;
+        }
+
+        /*1+10=11*/
+        p.test1{
+            color: #000;
+        }
+
+        /*100*/
+        #box{
+            color:goldenrod;
+        }
+
+        /*10*/
+        .test1{
+            color:purple;
+        }
+
+        /*1*/
+        /*! importtant 不想被覆盖掉就可以加这个，最高级*/
+        p{
+            color:red !important;
+        }
+
+    </style>
+<body>
+    <p class="test1" id="box">喜欢IT， 就上撩课</p>
+</body>
+</html>
