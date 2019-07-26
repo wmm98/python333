@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    div{
+        width:200px;
+        height:100px;
+        background-color:red;
+
+        /*让标签隐藏*/
+        /*display:none;*/
+
+        /*让块级标签转为行内标签*/
+        display: inline;
+    }
+
+    a{
+        background-color:skyblue;
+        /*让行内标签转为块级标签*/
+        display:block;
+        /*转为行内标签之后可以设置宽度高度等等之类的属性*/
+        width:200px;
+        height:50px;
+    }
+
+    button{
+        /*让行内标签转为块级标签*/
+        display:block;
+        width:200px;
+        height:50px;
+    }
+
+
+</style>
+<body>
+<!--块元素-->
+    <div>11111</div>
+
+    <!--行内元素-->
+    <!--改变不了高度距离什么的-->
+    <a href="">百度一下</a>
+    <a href="">京东一下</a>
+    <a href="">撩课一下</a>
+
+
+
+    <!--多个内联（行内元素）-块级元素可以在一行，能设置宽度和高度-->
+    <button>点我</button>
+
+</body>
+</html>
