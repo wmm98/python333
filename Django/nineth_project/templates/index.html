@@ -1,0 +1,17 @@
+<!--加载静态文件-->
+
+<!--导入-->
+<!--{% load static %}-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--加载文件夹staic中的静态文件index.css-->
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+</head>
+<body>
+    <!--加载front下的静态文件-->
+    <img src = "{% static 'front/logo.jpg' %}" alt="">
+</body>
+</html>

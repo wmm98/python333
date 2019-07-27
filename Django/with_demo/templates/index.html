@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--zs=persons.0, 注意中间不能有空格-->
+    {% with zs=persons.0 %}
+        <p>{{ zs }}</p>
+        <p>{{ zs }}</p>
+        <p>{{ zs }}</p>
+        <p>{{ zs }}</p>
+    {% endwith %}
+
+    <!--等同上面用法-->
+    {% with persons.0 as zs %}
+    <p>{{ zs }}</p>
+    <p>{{ zs }}</p>
+    <p>{{ zs }}</p>
+    <p>{{ zs }}</p>
+    {% endwith %}
+
+</body>
+</html>

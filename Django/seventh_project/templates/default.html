@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ value|default:"默认值" }}
+    <br>
+    <!--只有value=None的时候才会输出默认值-->
+    <!--注意default_if_none:"我是默认值" 键值对之间不能有空格-->
+    {{ value|default_if_none:"我是默认值" }}
+</body>
+</html>

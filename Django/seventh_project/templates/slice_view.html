@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ value|slice:"2:" }}
+    <!--[3, 4, 5, 6]-->
+    <br>
+    {{ value|slice:"-3:" }}
+    <!--[4, 5, 6]-->
+    <br>
+    {{ value|slice:"2::2" }}
+    <!--[3, 5, 7, 9]-->
+</body>
+</html>

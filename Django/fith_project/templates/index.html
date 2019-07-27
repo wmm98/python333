@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--if 标签-->
+    <!--{% if age < 18 %}-->
+        <!--<p>您是未成年人， 不能进入网吧</p>-->
+    <!--{% elif age == 18 %}-->
+        <!--<p>您是满18岁了，可以进入网吧了</p>-->
+    <!--{% else %}-->
+        <!--<p>您是成年人了，要承担起家庭的责任，也不能进入网吧</p>-->
+    <!--{% endif %}-->
+
+    <!--{% if '鲁班一号' in  hero %}-->
+        <!--<p>鲁班一号正在待命</p>-->
+    <!--{% else %}-->
+        <!--<p>鲁班一号在睡觉</p>-->
+    <!--{% endif %}-->
+
+    <!--&lt;!&ndash;for 标签&#45;&#45;, 遍历>-->
+    <!--<ul>-->
+        <!--{% for hero in hero %}-->
+            <!--<li>{{hero}}</li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
+
+
+    <!--{% for hero in hero %}-->
+        <!--<p>{{hero}}</p>-->
+    <!--{% endfor %}-->
+
+
+    <!--反序-->
+    <!--<ul>-->
+        <!--{% for h in hero reversed %}-->
+            <!--<li>{{h}}</li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
+
+
+    <!--遍历字典-->
+    <ul>
+        {% for key in person.keys %}
+            <li>{{key}}</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for value in person.values %}
+            <li>{{value}}</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for key, value in person.items %}
+            <li>{{key}}, {{value}}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>书籍表格</h3>
+    <table>
+        <thead>
+            <tr>
+                <td>序号</td>
+                <td>书名</td>
+                <td>作者</td>
+                <td>价格</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for book in book %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{book.name}}</td>
+                    <td>{{book.author}}</td>
+                    <td>{{book.price}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+    <table>
+        <thead>
+            <tr>
+                <td>序号</td>
+                <td>书名</td>
+                <td>作者</td>
+                <td>价格</td>
+            </tr>
+        </thead>
+
+
+        <h3>反向书籍</h3>
+        <tbody>
+            {% for book in book %}
+                {% if forloop.first %}
+                    <tr style="background: blue;">
+                {% elif forloop.last %}
+                    <tr style="background: blue;">
+                {% else %}
+                    <tr>
+                {% endif %}
+                        <td>{{forloop.counter}}</td>
+                        <td>{{book.name}}</td>
+                        <td>{{book.author}}</td>
+                        <td>{{book.price}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment }}</li>
+        {% empty %}
+            <li>没有任何评论</li>
+        {% endfor %}
+    </ul>
+
+
+</body>
+</html>

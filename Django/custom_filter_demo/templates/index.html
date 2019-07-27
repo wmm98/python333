@@ -1,0 +1,17 @@
+<!--{% load my_filter %}-->
+<!--已经在设置里设置好了相关可以不用加载也可以-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--"word"就是第二个参数-->
+    {{ value|greet:"word" }}
+    <!--你好word-->
+    <br>
+    <br>
+    {{ my_time|time_since}}
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!--继承base模板-->
+
+{% extends 'base.html' %}
+<!--如果想使用父模板中content中的代码，就使用super, 如果不写字这个就相当于覆盖重写-->
+{% block content %}
+    {{ block.super }}
+    <br>
+    这是首页的代码
+{% endblock %}

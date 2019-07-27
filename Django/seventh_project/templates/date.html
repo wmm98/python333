@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>date过滤器</title>
+</head>
+<body>
+    {{ today|date:"Y/m/d" }}
+    <br>
+    {{today|date:"Y-m-d"}}
+    <br>
+    {{today|date:"d-m-Y"}}
+    <br>
+    <!--n表示一位数的月份-->
+    {{today|date:"d-n-Y" }}
+    <br>
+    <!--小写g,h表示12小时制的,分别表示一位数时显示两位数和一位数的区别，大写就24小时制-->
+    {{ today|date:"Y-m-d g:" }}
+    <br>
+    {{ today|date:"Y-m-d h:" }}
+
+    <br>
+    {{ today|date:"Y-m-d G:" }}
+    <br>
+    {{ today|date:"Y-m-d H:" }}
+
+    <br>
+    {{ today|date:"Y-m-d H:i:s" }}
+</body>
+</html>
