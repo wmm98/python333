@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box{
+            width:400px;
+            height:300px;
+            background-color:red;
+            margin:50px;
+
+            /*水平居中*/
+            /*父模板的属性可以被子模版继承，行级元素只需要调整text-align就行*/
+            /*文字居中*/
+            text-align:center;
+
+            /*垂直居中*/
+            /*!*行级元素只需要调整line-height就行高度跟父模板中的一样*/
+            line-height:300px;
+
+            /*行级标签垂直居中*/
+            position:relative
+        }
+
+        .test1{
+            background-color:greenyellow;
+            width:200px;
+            height:40px;
+
+            /*块级元素水平居中*/
+            /*margin: 0 auto;*/
+
+            /*重写行高*/
+            line-height:40px;
+
+            /*块级元素垂直居中*/
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin-left:-100px;
+            margin-top:-20px;
+        }
+
+        span{
+            background-color:greenyellow;
+        }
+
+    </style>
+</head>
+<body>
+<div id="box">
+    <div class="test1">我是块级标签</div>
+    <!--<span>我是行级元素</span>-->
+    <!--<br>-->
+    <!--<button>我是按钮</button>-->
+</div>
+</body>
+</html>
