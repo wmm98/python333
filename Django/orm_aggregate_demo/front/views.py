@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.db.models import Avg, Count, Max, Min, Sum
+from django.db.models import Avg, Count, Max, Min, Sum, F, Q
 from django.db import connection
 from front.models import Book, Author, BookOrder
 
@@ -141,3 +141,62 @@ def index5(request):
         # 三国演义173.0
         # 水浒传187.0
     return HttpResponse("index5")
+
+
+def index6(request):
+    # 使用F表达式动态获取不需要直接获取出所有的数据，而是直接执行SQL层面上的语句
+    # 给每一本图书的售价增加10元
+    Book.objects.update(price=F("price") + 10)
+    print(connection.queries[-1])
+    """{'sql': 'UPDATE `book` SET `price` = (`book`.`price` + 10)', 'time': '0.004'}"""
+
+    # 查询名字等于邮箱的记录
+    authors = Author.objects.filter(name=F("email"))
+    for author in authors:
+        print("%s %s" % (author.name, author.email))
+        # sna@qq.com sna@qq.com
+    print(connection.queries[-1])
+    """ 'SELECT `author`.`id`, `author`.`name`, `author`.`age`, `author`.`email` FROM `author` ' \
+    'WHERE `author`.`name` = (`author`.`email`)'"""
+
+    return HttpResponse("index6")
+
+
+def index7(request):
+    # 普通的语句只能查询 and 不能 or
+    # 查询价格大于100且评分在4.85分以上的图书
+    # books = Book.objects.filter(price__gte=100, rating__gte=4.85)
+    books = Book.objects.filter(Q(price__gte=100) & Q(rating__gte=4.85))
+    for book in books:
+        print("%s %s %s" % (book.name, book.price, book.rating))
+        # 西游记 145.0 4.85
+        # 红楼梦 110.0 4.9
+    print(connection.queries[-1])
+    """'SELECT `book`.`id`, `book`.`name`, `book`.`pages`, `book`.`price`, `book`.`rating`, `book`.`author_id`, 
+    `book`.`publisher_id` FROM `book` WHERE (`book`.`price` >= 100.0e0 AND `book`.`rating` >= 4.85"""
+    print("-----------------------------------------------")
+    # 获取价格大于100或者评分低于4.83分的图书
+    books = Book.objects.filter(Q(price__lt=100) | Q(rating__lt=4.85))
+    for book in books:
+        print("%s %s %s" % (book.name, book.price, book.rating))
+        # 三国演义 148.0 4.8
+        # 水浒传 147.0 4.83
+        # 红楼梦 90.0 4.9
+    print(connection.queries[-1])
+    """
+    'SELECT `book`.`id`, `book`.`name`, `book`.`pages`, `book`.`price`, `book`.`rating`, `book`.`author_id`, 
+    `book`.`publisher_id` FROM `book` WHERE (`book`.`price` < 100.0e0 OR `book`.`rating` < 4.85e0)'
+    """
+    print("--------------------------------------------")
+    # 获取价格大于100，并且图书名字中不包含"传"的图书
+    books = Book.objects.filter(Q(price__gte=100) & ~Q(name__icontains='传'))
+    for book in books:
+        print("%s %s %s" % (book.name, book.price, book.rating))
+        # 三国演义 148.0 4.8
+        # 西游记 145.0 4.85
+    print(connection.queries[-1])
+    """
+    "SELECT `book`.`id`, `book`.`name`, `book`.`pages`, `book`.`price`, `book`.`rating`, `book`.`author_id`, 
+    `book`.`publisher_id` FROM `book` WHERE (`book`.`price` >= 100.0e0 AND NOT (`book`.`name` LIKE '%传%'))"
+    """
+    return HttpResponse("index7")
