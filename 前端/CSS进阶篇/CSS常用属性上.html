@@ -35,6 +35,61 @@
             font-style: italic;
         }
 
+        a{
+            /*去下划线*/
+            /*text-decoration: none;*/
+            text-decoration:none;
+        /*h1 {text-decoration:overline}*/
+        /*h2 {text-decoration:line-through}*/
+        /*h3 {text-decoration:underline}*/
+        /*h4 {text-decoration:blink}*/
+        }
+
+        #word{
+            width:200px;
+            height:100px;
+            background-color: red;
+
+
+            /*text-indent 属性规定文本块中首行文本的缩进。*/
+            text-indent: 30px;
+            /*text-indent: 5%;*/
+
+            /*text-transform 属性控制文本的大小写*/
+        /*h1 {text-transform:uppercase}*/
+        /*h2 {text-transform:capitalize}*/
+        /*p {text-transform:lowercase}*/
+
+        /*none	默认。定义带有小写字母和大写字母的标准的文本。*/
+        /*capitalize	文本中的每个单词以大写字母开头。*/
+        /*uppercase	定义仅有大写字母。*/
+        /*lowercase	定义无大写字母，仅有小写字母。*/
+        text-transform: lowercase;
+
+
+        /*overflow 属性规定当内容溢出元素框时发生的事情。*/
+        /*visible	默认值。内容不会被修剪，会呈现在元素框之外。*/
+        /*hidden	内容会被修剪，并且其余内容是不可见的。*/
+        /*scroll	内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。*/
+        /*auto	如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。*/
+        /*inherit	规定应该从父元素继承 overflow 属性的值。    */
+        overflow:auto;
+
+        }
+
+        ul{
+            /*list-style-type 属性设置列表项标记的类型。*/
+
+            /*disc	默认。标记是实心圆。*/
+            /*circle	标记是空心圆。*/
+            /*square	标记是实心方块。*/
+            /*decimal	标记是数字。*/
+            /*decimal-leading-zero	0开头的数字标记。(01, 02, 03, 等。)*/
+            /*lower-roman	小写罗马数字(i, ii, iii, iv, v, 等。)*/
+            /*upper-roman	大写罗马数字(I, II, III, IV, V, 等。)*/
+            list-style-type: decimal;
+        }
+
     </style>
 
 </head>
@@ -43,6 +98,18 @@
 
     <div>撩课学院</div>
     <p>打酱油的</p>
+
+    <a href="#">百度一下</a>
+
+    <p id="word">云课堂是一款打破传统教育模式的在线学Python WWWWWWW习平台,为学生提供了多样化的学习形式,主要VVVmmmmm包括在线直播、精品课堂、题库和教学资源等,然NAMEenaojfdo而在云课堂使用过程中,作为新手用户,会...</p>
+
+    <ul>
+        <li>今天的天气很好！</li>
+        <li>今天的天气很好！</li>
+        <li>今天的天气很好！</li>
+        <li>今天的天气很好！</li>
+        <li>今天的天气很好！</li>
+    </ul>
 
 </body>
 </html>
