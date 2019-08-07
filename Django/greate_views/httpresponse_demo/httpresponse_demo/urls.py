@@ -18,4 +18,6 @@ from django.urls import path
 
 urlpatterns = [
     path('', views.index),
+    path('jsonresponse_view/', views.jsonresponse_view, name='jsonresponse_view'),
+    path('index1/', views.index1, name='index1')
 ]

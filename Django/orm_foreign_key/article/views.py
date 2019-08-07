@@ -94,7 +94,7 @@ def one_to_many_view(request):
     return HttpResponse("success")
 
 
-# 一对多
+# 一对一
 def one_to_one_view(request):
     # user = models.FrontUser.objects.first()
     # extension = models.UserExtension(school='知了')
