@@ -8,6 +8,7 @@
 from django.db import models
 
 
+
 class DongguangWeather(models.Model):
     date1 = models.CharField(max_length=20, blank=True, null=True)
     weather_condition1 = models.CharField(db_column='Weather_condition1', max_length=10, blank=True,

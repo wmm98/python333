@@ -8,6 +8,7 @@ from sklearn.tree import DecisionTreeClassifier
 from django.forms.models import model_to_dict
 
 
+
 # 生成csv文件
 def get_data1(m_model):
     weather_data = m_model.objects.values_list()

@@ -17,6 +17,7 @@ Including another URLconf
 from django.urls import path
 from front import views
 
+
 urlpatterns = [
     # path('', views.index),
     # path('get_data/', views.get_data),
