@@ -8,7 +8,6 @@ from sklearn.tree import DecisionTreeClassifier
 from django.forms.models import model_to_dict
 
 
-
 # 生成csv文件
 def get_data1(m_model):
     weather_data = m_model.objects.values_list()
@@ -467,13 +466,24 @@ def data_predict():
 
 # 获取预测结果
 def get_city(request):
-    m_model = GuangzhouWeather
-    # 调用 生成csv文件
-    get_data1(m_model)
-    # 调用
-    result = data_predict()
-    context = {"data": result}
+    print("================小恒给范德萨发的咖啡和的撒+++++++++++++++=")
+    # m_model = GuangzhouWeather
+    m_models = [GuangzhouWeather, DongguangWeather, FoshanWeather, ZhuhaiWeather, ShenzhenWeather, HuizhouWeather,
+                MaomingWeather, ZhanjiangWeather,
+                JiangmenWeather, ShantouWeather, ShantouWeather, ZhaoqingWeather, ZhongshanWeather]
 
-    # 删除表的所有数据
-    TestData1.objects.all().delete()
+    keys = ["GuangzhouWeather", "DongguangWeather", "FoshanWeather", "ZhuhaiWeather", "ShenzhenWeather",
+            "HuizhouWeather", "MaomingWeather", "ZhanjiangWeather",
+            "JiangmenWeather", "ShantouWeather", "ShantouWeather", "ZhaoqingWeather", "ZhongshanWeather"]
+
+    # 遍历所有的表
+    context = {}
+    for i in range(len(m_models)):
+        # 调用 生成csv文件
+        get_data1(m_models[i])
+        # 调用
+        result = data_predict()
+        context[keys[i]] = result
+        # 删除表的所有数据
+        TestData1.objects.all().delete()
     return JsonResponse(context)
