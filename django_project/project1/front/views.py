@@ -6,6 +6,7 @@ import numpy as np
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
 from django.forms.models import model_to_dict
+import datetime
 
 
 # 生成csv文件
@@ -197,6 +198,13 @@ def every_col_test():
 
 # 预测数据
 def data_predict():
+    # 一周的时间
+    today = datetime.date.today()
+    date_days = [today]
+    for d in range(1, 7):
+        futrue_day = today + datetime.timedelta(days=d)
+        date_days.append(futrue_day)
+
     # 调用处理好的数据
     list_data = deal_data()
     # 标签
@@ -351,7 +359,7 @@ def data_predict():
 
     # 最高温 最低温 天气状况1 天气状况2 风力风向1 风力风向2
     # 返回原来的数据（真实数据）
-    today_weather = []
+    today_weather = [date_days[0]]
     j = 0
     for m in labels_list:
         for n in m:
@@ -396,7 +404,7 @@ def data_predict():
     next_day = TestData1.objects.all().values("high_temperature", "low_temperature", "weather_condition1",
                                               "weather_condition2", "wind_direction1", "wind_direction2")
     # 第二天
-    day_data2 = []
+    day_data2 = [date_days[1]]
     day2 = list(list(next_day)[-1].values())
     j2 = 0
     for m2 in labels_list:
@@ -406,7 +414,7 @@ def data_predict():
         j2 += 1
 
     # 第三天
-    day_data3 = []
+    day_data3 = [date_days[2]]
     day3 = list(list(next_day)[-2].values())
     j3 = 0
     for m3 in labels_list:
@@ -416,7 +424,7 @@ def data_predict():
         j3 += 1
 
     # 第四天
-    day_data4 = []
+    day_data4 = [date_days[3]]
     day4 = list(list(next_day)[-3].values())
     j4 = 0
     for m4 in labels_list:
@@ -426,7 +434,7 @@ def data_predict():
         j4 += 1
 
     # 第五天
-    day_data5 = []
+    day_data5 = [date_days[4]]
     day5 = list(list(next_day)[-4].values())
     j5 = 0
     for m5 in labels_list:
@@ -436,7 +444,7 @@ def data_predict():
         j5 += 1
 
     # 第六天
-    day_data6 = []
+    day_data6 = [date_days[5]]
     day6 = list(list(next_day)[-5].values())
     j6 = 0
     for m6 in labels_list:
@@ -445,7 +453,7 @@ def data_predict():
                 day_data6.append(n6[0])
         j6 += 1
 
-    day_data7 = []
+    day_data7 = [date_days[6]]
     day7 = list(list(next_day)[-6].values())
     j7 = 0
     for m7 in labels_list:
@@ -455,6 +463,12 @@ def data_predict():
         j7 += 1
 
     seven_days_data = [today_weather, day_data2, day_data3, day_data4, day_data5, day_data6, day_data7]
+
+    # 处理温度
+    for q in seven_days_data:
+        q[1] = q[1][:-1]
+        q[2] = q[2][:-1]
+
     print("=====7天的数据===========")
     # print(seven_days_data)
     for zz in seven_days_data:
