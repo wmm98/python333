@@ -7,6 +7,9 @@ from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
 from django.forms.models import model_to_dict
 import datetime
+import requests
+from bs4 import BeautifulSoup
+import os
 
 
 # 生成csv文件
@@ -147,6 +150,41 @@ def tree_predict(x_train, x_test, y_train):
     predict_result = tree_model.predict(y_train)
     # print("这是tree_predict方法")
     return predict_result
+
+
+# 返回今天的数据
+def today_condiction(city):
+    url = 'http://www.tianqihoubao.com/yubao/%s.html' % city
+    r = requests.get(url)
+    soup = BeautifulSoup(r.text, 'lxml')
+    data = soup.find('div', class_='wdetail')
+    guanzhou = data.find_all('table')
+    weather_data = []
+    for table in guanzhou:
+        for tr in table.find_all('tr')[1:]:
+            td_list = []
+            for td in tr.text.split():
+                td_list.append(td)
+            #                 print(td)
+            #             print(td_list)
+            weather_data.append(td_list)
+
+    day = []
+    night = []
+    for i in range(0, len(weather_data)):
+        if i % 2 == 0:
+            day.append(weather_data[i])
+        else:
+            night.append(weather_data[i])
+
+    today_white = day[1]
+    today_night = night[1][1:]
+
+    today_weather = [today_white[0], today_white[3][:-1], today_night[1][:-1], today_white[2], today_night[0],
+                     today_white[4] + today_white[5],
+                     today_night[2] + today_night[3]]
+
+    return today_weather
 
 
 # 各个字段的测试数据
@@ -462,7 +500,8 @@ def data_predict():
                 day_data7.append(n7[0])
         j7 += 1
 
-    seven_days_data = [today_weather, day_data2, day_data3, day_data4, day_data5, day_data6, day_data7]
+    # seven_days_data = [today_weather, day_data2, day_data3, day_data4, day_data5, day_data6, day_data7]
+    seven_days_data = [day_data2, day_data3, day_data4, day_data5, day_data6, day_data7]
 
     # 处理温度
     for q in seven_days_data:
@@ -478,17 +517,243 @@ def data_predict():
     return seven_days_data
 
 
+# 扩展功能,温馨小提示
+def get_tips(weather_info):
+    month = int(weather_info[0][5:7])
+    max_temp = int(weather_info[1])
+    mini_temp = int(weather_info[2])
+    wea_cond1 = weather_info[3]
+    wea_cond2 = weather_info[4]
+    wind_dire = weather_info[5]
+    print(month, max_temp, mini_temp, wea_cond1, wea_cond2, wind_dire)
+    # -------------- 天气舒适度
+    comfort_index = ['1、极不适应、35',
+                     '2、很不舒适、30',
+                     '3、不舒适、25',
+                     '4、较舒适、22',
+                     '5、舒适、20',
+                     '6、较舒适、15',
+                     '7、不舒适、10',
+                     '8、很不舒适、8',
+                     '9、极不适应、4']
+
+    def get_comfIndex(comfort_index, max_temp, mini_temp):
+        # 4 很热，极不适应 热调节功能障碍
+        if max_temp >= 35:
+            comf = comfort_index[0].split('、')[1]
+        #  3 热，很不舒适 过度出汗
+        if max_temp >= 30 and max_temp < 35:
+            comf = comfort_index[1].split('、')[1]
+        #  2  暖，不舒适 出汗 、25
+        if max_temp >= 25 and max_temp < 30:
+            comf = comfort_index[2].split('、')[1]
+        #  1 温暖，较舒适 轻度出汗，血管舒张
+        if max_temp >= 22 and max_temp < 25:
+            comf = comfort_index[3].split('、')[1]
+        # 0 舒适，最可接受 中性
+        if max_temp >= 20 and max_temp < 22:
+            comf = comfort_index[4].split('、')[1]
+        # -1 凉爽，较舒适 血管收缩
+        if max_temp >= 15 and max_temp < 20:
+            comf = comfort_index[5].split('、')[1]
+        # -2 凉，不舒适 血管收缩
+        if mini_temp >= 10 and max_temp < 15:
+            comf = comfort_index[6].split('、')[1]
+            # -3 冷，很不舒适 稍有体温下降
+        if mini_temp < 9 and mini_temp >= 5:
+            comf = comfort_index[7].split('、')[1]
+            # -4 很冷，极不适应 发抖
+        if mini_temp < 5:
+            comf = comfort_index[8].split('、')[1]
+        return comf
+
+    # -------------------  洗车气象指数
+    carWashing_index = ['1、适合',
+                        '2、不适合']
+
+    def get_carWashingIndex(carWashing_index, wea_cond1, wea_cond2):
+        '''获取汽车气象指数'''
+        if wea_cond1.find('雨') != -1 or wea_cond2.find('雨') != -1:
+            return carWashing_index[1].split('、')[1]
+        else:
+            return carWashing_index[0].split('、')[1]
+
+    # -------------------- 穿衣气象指数
+    wear_index = ['1、适合衬衫、夏',
+                  '2、可加件外套、春，秋',
+                  '3、适合棉服，羽绒服类、冬']
+
+    def get_wearIndex(wear_index, month):
+        if month > 6 and month < 10:
+            return wear_index[0].split('、')[1]
+        elif month > 10 or month < 3:
+            return wear_index[-1].split('、')[1]
+        else:
+            return wear_index[1].split('、')[1]
+
+    # -------------------- 运动指数
+    sport_index = ['1、适宜',
+                   '2、较适宜',
+                   '3、较不适宜',
+                   '4、非常不适宜']
+
+    def get_sportIndex(sport_index, max_temp, mini_temp, wea_cond1, wea_cond2):
+        if max_temp > 35 or wea_cond1.find('雪') != -1 or wea_cond1.find('雨') != -1 or wea_cond2.find(
+                '雪') != -1 or wea_cond2.find('雨') != -1:
+            sportIndex = sport_index[-1].split('、')[1]
+        if wea_cond1.find('云') != -1 or wea_cond2.find('云') != -1:
+            sportIndex = sport_index[0].split('、')[1]
+        if wea_cond1.find('晴') != -1 or wea_cond2.find('晴') != -1:
+            sportIndex = sport_index[1].split('、')[1]
+        if mini_temp < 10:
+            sportIndex = sport_index[1].split('、')[1]
+        return sportIndex
+
+    # ------------------- 旅游指数分为5级，级数越高，越不适应旅游。
+    travel_index = ['1、非常适宜',
+                    '2、适宜',
+                    '3、较适宜',
+                    '4、较不适宜',
+                    '5、非常不适宜']
+
+    def get_travelIndex(travel_index, max_temp, mini_temp, wea_cond1, wea_cond2):
+        if max_temp < 30 and mini_temp > 10:
+            # 有雨的天气 非常不适合旅游
+            if wea_cond1.find('雨') != -1 and wea_cond2.find('雨') != -1:
+                traverlIndex = travel_index[-1].split('、')[1]
+                return traverlIndex
+            # 晴天 较适合旅游
+            if wea_cond1.find('晴') != -1 and wea_cond2.find('雨') == -1 or wea_cond2.find('晴') != -1 and wea_cond1.find(
+                    '雨') == -1:
+                traverlIndex = travel_index[0].split('、')[1]
+                return traverlIndex
+            # 多云 适合旅游
+            if wea_cond1.find('云') != -1 and wea_cond2.find('雨') == -1 or wea_cond2.find('云') != -1 and wea_cond1.find(
+                    '雨') == -1:
+                traverlIndex = travel_index[1].split('、')[1]
+                return traverlIndex
+            if wea_cond1.find('阴') != -1 and wea_cond2.find('雨') == -1 or wea_cond2.find('阴') != -1 and wea_cond1.find(
+                    '雨') == -1:
+                traverlIndex = travel_index[2].split('、')[1]
+                return traverlIndex
+
+        # 高温，低温天气不适合旅游
+        if max_temp > 35 or mini_temp < 2:
+            traverlIndex = travel_index[-1].split('、')[1]
+        else:
+            traverlIndex = travel_index[-2].split('、')[1]
+
+        return traverlIndex
+
+    # ---------------------------- 紫外线指数
+    ultravioletRays_index = ['1、紫外线较弱、阴或雨天',
+                             '2、 紫外线弱、多云',
+                             '3、紫外线弱、少云',
+                             '4、紫外线强、晴天无云',
+                             '5、紫外线较强、夏季晴日']
+
+    def get_ultravioletRaysIndex(ultravioletRays_index, month, wea_cond1, wea_cond2):
+        if month > 6 and month < 10:
+            # 指数值为：10～12、夏季晴日
+            if wea_cond1.find('晴') != -1 and wea_cond2.find('雨') == -1 or wea_cond2.find('晴') != -1 and wea_cond1.find(
+                    '雨') == -1:
+                ultravioletRaysIndex = ultravioletRays_index[-1].split('、')[1]
+            else:
+                ultravioletRaysIndex = ultravioletRays_index[-2].split('、')[1]
+        # 指数值为：0～2、阴或雨天
+        if wea_cond1.find('雨') != -1 or wea_cond2.find('雨') != -1:
+            ultravioletRaysIndex = ultravioletRays_index[0].split('、')[1]
+            # 指数值为：7～9、晴天无云
+        if wea_cond1.find('晴') != -1 and wea_cond2.find('云') == -1 or wea_cond2.find('晴') != -1 and wea_cond1.find(
+                '云') == -1:
+            ultravioletRaysIndex = ultravioletRays_index[-2].split('、')[1]
+        # 指数值为：5～6、少云
+        if wea_cond1.find('云') != -1 and wea_cond2.find('雨') == -1 or wea_cond2.find('云') != -1 and wea_cond1.find(
+                '雨') == -1:
+            ultravioletRaysIndex = ultravioletRays_index[1].split('、')[1]
+        # 指数值为：3～4、多云
+        if wea_cond1.find('云') != -1 and wea_cond2.find('云') != -1:
+            ultravioletRaysIndex = ultravioletRays_index[2].split('、')[1]
+        return ultravioletRaysIndex
+
+    # ----------------------- 化妆指数
+    makeup_index = ['1、建议涂点防嗮、晴，多云,阴',
+                    '2、可不凃防嗮、雨']
+
+    def get_makeUpIndex(makeup_index, month, wea_cond1, wea_cond2):
+        if month > 6 and month < 10:
+            if wea_cond1.find('雨') != -1 and wea_cond2.find('雨') != -1:
+                return makeup_index[1].split('、')[1]
+            else:
+                return makeup_index[0].split('、')[1]
+        else:
+            if wea_cond1.find('雨') != -1 or wea_cond2.find('雨') != -1:
+                return makeup_index[1].split('、')[1]
+
+    # ---------------------交通指数
+    traffic_index = ['1、畅通、晴',
+                     '2、基本畅通、云，阴',
+                     '3、轻度拥堵、雨',
+                     '4、中度拥堵、大雨',
+                     '5、严重拥堵、暴雨']
+
+    def get_trafficIndex(traffic_index, wea_cond1, wea_cond2):
+        # 0～2(畅通)、晴
+        if wea_cond1.find('晴') != -1 and wea_cond2.find('晴'):
+            return traffic_index[0].split('、')[1]
+        # 2～4(基本畅通)、云，阴
+        if wea_cond1.find('云') != -1 and wea_cond2.find('云') or wea_cond1.find('阴') != -1 and wea_cond2.find('阴') != -1:
+            return traffic_index[1].split('、')[1]
+        # 5、8～10(严重拥堵)、暴雨
+        if wea_cond1.find('暴雨') != -1 or wea_cond2.find('暴雨') != -1:
+            return traffic_index[-1].split('、')[1]
+        # 6～8(中度拥堵)、大雨
+        if wea_cond1.find('大雨') != -1 or wea_cond2.find('大雨') != -1:
+            return traffic_index[-2].split('、')[1]
+        # 4～6(轻度拥堵)、雨
+        if wea_cond1.find('雨') != -1 or wea_cond2.find('雨') != -1:
+            return traffic_index[2].split('、')[1]
+        # 无雨天气 基本顺畅
+        if wea_cond1.find('雨') == -1 or wea_cond2.find('雨') == -1:
+            return traffic_index[1].split('、')[1]
+
+    comf = get_comfIndex(comfort_index, max_temp, mini_temp)
+    cw = get_carWashingIndex(carWashing_index, wea_cond1, wea_cond2)
+    drsg = get_wearIndex(wear_index, month)
+    sport = get_sportIndex(sport_index, max_temp, mini_temp, wea_cond1, wea_cond2)
+    trav = get_travelIndex(travel_index, max_temp, mini_temp, wea_cond1, wea_cond2)
+    uv = get_ultravioletRaysIndex(ultravioletRays_index, month, wea_cond1, wea_cond2)
+    mu = get_makeUpIndex(makeup_index, month, wea_cond1, wea_cond2)
+    ptfc = get_trafficIndex(traffic_index, wea_cond1, wea_cond2)
+
+    tips_dict = {}
+    tips_dict['comf'] = comf
+    tips_dict['cw'] = cw
+    tips_dict['drsg'] = drsg
+    tips_dict['sport'] = sport
+    tips_dict['trav'] = trav
+    tips_dict['uv'] = uv
+    tips_dict['mu'] = mu
+    tips_dict['ptfc'] = ptfc
+
+    return tips_dict
+
+
 # 获取预测结果
 def get_city(request):
     print("================小恒给范德萨发的咖啡和的撒+++++++++++++++=")
     # m_model = GuangzhouWeather
     m_models = [GuangzhouWeather, DongguangWeather, FoshanWeather, ZhuhaiWeather, ShenzhenWeather, HuizhouWeather,
                 MaomingWeather, ZhanjiangWeather,
-                JiangmenWeather, ShantouWeather, ShantouWeather, ZhaoqingWeather, ZhongshanWeather]
+                JiangmenWeather, ShantouWeather, ShaoguanWeather, ZhaoqingWeather, ZhongshanWeather]
 
-    keys = ["GuangzhouWeather", "DongguangWeather", "FoshanWeather", "ZhuhaiWeather", "ShenzhenWeather",
-            "HuizhouWeather", "MaomingWeather", "ZhanjiangWeather",
-            "JiangmenWeather", "ShantouWeather", "ShantouWeather", "ZhaoqingWeather", "ZhongshanWeather"]
+    cities = ["guangzhou", "dongguang", "foshan", "zhuhai", "shenzhen",
+              "huizhou", "maoming", "zhanjiang",
+              "jiangmen", "shantou", "shaoguan", "zhaoqing", "zhongshan"]
+
+    keys = ["广州", "东莞", "佛山", "珠海", "深圳",
+            "惠州", "茂名", "湛江",
+            "江门", "汕头", "韶关", "肇庆", "中山"]
 
     # 遍历所有的表
     context = {}
@@ -497,7 +762,26 @@ def get_city(request):
         get_data1(m_models[i])
         # 调用
         result = data_predict()
+        # 获取今天的天气情况
+        # 去掉风力风向2
+        today_weather = today_condiction(cities[i])[:-1]
+        result.append(today_weather)
+
+        tips = get_tips(today_weather)
+
         context[keys[i]] = result
+        context[keys[i] + "_tips"] = tips
         # 删除表的所有数据
         TestData1.objects.all().delete()
     return JsonResponse(context)
+
+
+# 保存图片地址到数据库
+# def save_img_address(request):
+#     img_path = 'D:\课\小学期\天气ui\天气ui'
+#     img_name_list = os.listdir(img_path)
+#     # print(img_name_list)
+#     for img_name in img_name_list:
+#         img_full_path = os.path.join(img_path, img_name)
+#         ImageData.objects.create(img_name=img_full_path)
+#     return HttpResponse("成功")

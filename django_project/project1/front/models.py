@@ -239,3 +239,10 @@ class TestData1(models.Model):
 
     class Meta:
         db_table = 'test_data1'
+
+
+class ImageData(models.Model):
+    img_name = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        db_table = 'img_address'
