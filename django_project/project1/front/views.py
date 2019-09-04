@@ -1074,6 +1074,7 @@ def get_tips(weather_info):
         else:
             return carWashing_index[0].split('、')[1]
 
+
     # -------------------- 穿衣气象指数
     wear_index = ['1、适合衬衫、夏',
                   '2、可加件外套、春，秋',
@@ -1261,13 +1262,14 @@ def get_city(request):
         # 获取今天的天气情况
         # 去掉风力风向2
 
-        # today_weather = today_condiction(cities[i])[:-1]
-        # print(today_weather)
+        today_weather = today_condiction(cities[i])[:-1]
+        print(today_weather)
 
-        # tips = get_tips(today_weather)
+        tips = get_tips1(today_weather)
+        result[0] = today_weather
         # result.append(today_weather)
 
-        tips = get_tips1(result[0])
+        # tips = get_tips1(result[0])
 
         # 返回图标
         img_address = send_picture(result)
