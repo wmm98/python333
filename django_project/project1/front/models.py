@@ -229,6 +229,23 @@ class ZhuhaiWeather(models.Model):
         db_table = 'zhuhai_weather'
 
 
+class YunFuWeather(models.Model):
+    date1 = models.CharField(max_length=20, blank=True, null=True)
+    weather_condition1 = models.CharField(db_column='Weather_condition1', max_length=10, blank=True,
+                                          null=True)  # Field name made lowercase.
+    weather_condition2 = models.CharField(db_column='Weather_condition2', max_length=10, blank=True,
+                                          null=True)  # Field name made lowercase.
+    high_temperature = models.CharField(max_length=10, blank=True, null=True)
+    low_temperature = models.CharField(max_length=10, blank=True, null=True)
+    wind_direction1 = models.CharField(db_column='Wind_direction1', max_length=20, blank=True,
+                                       null=True)  # Field name made lowercase.
+    wind_direction2 = models.CharField(db_column='Wind_direction2', max_length=20, blank=True,
+                                       null=True)  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'yunfu_weather'
+
+
 class TestData1(models.Model):
     high_temperature = models.BigIntegerField()
     low_temperature = models.BigIntegerField()
@@ -246,3 +263,10 @@ class ImageData(models.Model):
 
     class Meta:
         db_table = 'img_address'
+
+
+class BackgroundData(models.Model):
+    img_name = models.CharField(max_length=200, blank=True, null=True)
+
+    class Meta:
+        db_table = 'background_address'

@@ -1820,7 +1820,7 @@ def get_city(request):
 def get_data(city, model):
     base_id = 'http://www.tianqihoubao.com/lishi/%s/month/' % city
     weather_id = []
-    for year in range(2019, 2020):
+    for year in range(2011, 2020):
         if year != 2019:
             for month in range(1, 13):
                 base_id1 = ''
@@ -1833,7 +1833,7 @@ def get_data(city, model):
                 weather_id.append(base_id1)
 
         else:
-            for month1 in range(9, 10):
+            for month1 in range(1, 10):
                 base_id1 = ''
                 if month1 < 10:
                     m1 = '0' + str(month1)
@@ -1898,17 +1898,17 @@ def get_data(city, model):
 
 
 def test_get_data(request):
-    m_models = [GuangzhouWeather, DongguangWeather, FoshanWeather, ZhuhaiWeather, ShenzhenWeather, HuizhouWeather,
-                MaomingWeather, ZhanjiangWeather,
-                JiangmenWeather, ShantouWeather, ShaoguanWeather, ZhaoqingWeather, ZhongshanWeather]
+    # m_models = [GuangzhouWeather, DongguangWeather, FoshanWeather, ZhuhaiWeather, ShenzhenWeather, HuizhouWeather,
+    #             MaomingWeather, ZhanjiangWeather,
+    #             JiangmenWeather, ShantouWeather, ShaoguanWeather, ZhaoqingWeather, ZhongshanWeather]
 
     cities = ["guangzhou", "dongguang", "foshan", "zhuhai", "shenzhen",
               "huizhou", "maoming", "zhanjiang",
               "jiangmen", "shantou", "shaoguan", "zhaoqing", "zhongshan"]
 
-    for i in range(len(m_models)):
+    # for i in range(len(cities)):
         # 爬数据
-        get_data(cities[i], m_models[i])
+    get_data('yunfu', YunFuWeather)
     return HttpResponse("成功")
 
 

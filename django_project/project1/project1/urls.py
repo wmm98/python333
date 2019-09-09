@@ -19,10 +19,13 @@ from front import views
 
 
 urlpatterns = [
-    # path('', views.index),
+    path('', views.index),
+    # path('save_background_address/', views.save_background_address),
     # path('get_data/', views.get_data),
     # path('deal_data/', views.deal_data),
     # path('models_data/', views.models_data),
+    # path('save_img/', views.save_img_address),
     path('get_city/', views.get_city),
+    path('test_get_data/', views.test_get_data)
 
 ]
