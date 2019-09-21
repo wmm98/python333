@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转账</title>
+</head>
+<body>
+
+    <h1>中国工商银行转账</h1>
+
+    <form action="" method="post" id="myform">
+        <!--表单里可以直接用csrf标签-->
+        {% csrf_token %}
+        <table>
+            <tbody>
+            <tr>
+                <td>转给:</td>
+                <td><input type="text" name="email"></td>
+            </tr>
+
+            <tr>
+                <td>金额：</td>
+                <td><input type="text" name="money"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="submit" id="submit" value="提交"></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </form>
+
+</body>
+</html>
