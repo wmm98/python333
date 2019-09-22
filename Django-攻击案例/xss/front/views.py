@@ -38,7 +38,7 @@ def add_comment(request):
     Comment.objects.create(content=content)
     return redirect('index')
 
-# 添加评论
+#  添加评论
 @require_http_methods(['POST'])
 def add_comment1(request):
     content = request.POST.get('content')

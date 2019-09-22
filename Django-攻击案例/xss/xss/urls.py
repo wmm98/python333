@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from front import views
 
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('comment/', views.add_comment1, name="comment")
