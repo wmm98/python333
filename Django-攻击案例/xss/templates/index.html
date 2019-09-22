@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+
+    <ul>
+        {% for comment in comments %}
+            <!--进行转义的字符，比较安全-->
+            <!--<li>{{ comment.content }}</li>-->
+
+            <!--如果不需要用户副文本的话可以不用save-->
+            <!--渲染出原来的字符，没有进行转义-->
+            <li>{{ comment.content|safe }}</li>
+        {% endfor %}
+    </ul>
+
+    <form action="{% url 'comment' %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" id="" cols="30" row="3"></textarea>
+        <p>
+            <input type="submit" value="提交">
+        </p>
+    </form>
+
+</body>
+</html>
