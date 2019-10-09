@@ -25,5 +25,10 @@ urlpatterns = [
     path('inherit_view/', views.inherit_view, name='inherit_view'),
     path("login/", views.my_login, name="login"),
     path("logout/", views.my_logout, name="logout"),
-    path('profile/', views.profile, name='profile')
+    path('profile/', views.profile, name='profile'),
+    path('permission/', views.add_permission, name='add_permission'),
+    path('operate_permission/', views.operate_permission, name='operate_permission'),
+    path('add_article/', views.add_article, name='add_article'),
+    path('operate_group/', views.operate_group, name="operate_group"),
+    path("perssions_templates/", views.perssions_templates, name="perssions_templates")
 ]

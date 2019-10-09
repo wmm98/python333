@@ -138,7 +138,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
+# 通过定义模型添加权限：
+# 如果我们想要增加新的权限，比如查看某个模型的权限，那么我们可以在定义模型的时候在Meta中定义好。示例代码如下：
+
 class Article(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+
+    # 添加权限
+    class Meta:
+        permissions = [
+            ('view_article', '看文章的权限')
+        ]
