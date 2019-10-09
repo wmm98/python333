@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script type="text/javascript">-->
+        <!--var num;-->
+        <!--document.write("<h1>" + (typeof num) + "</h1>");-->
+        <!--if (!num){-->
+            <!--alert("此变量还没有这只内容");-->
+        <!--}else{-->
+            <!--alert("此变量有内容")-->
+        <!--}-->
+    <!--</script>-->
+
+
+    <!--拆分字符串-->
+    <!--<script type="text/javascript">-->
+        <!--var num = 'hello word ni hao';-->
+        <!--// 定义变量-->
+        <!--var result = num.split(" ");-->
+        <!--console.log(typeof result);-->
+        <!--// object-->
+        <!--console.log(result);-->
+        <!--// ["hello", "word", "ni", "hao"]-->
+        <!--for(var x = 0; x < result.length; x++){-->
+            <!--console.log(result[x]);-->
+        <!--}-->
+    <!--</script>-->
+
+    <script type="text/javascript">
+        // 打印表格九九乘法表
+        document.write("<table border='1'>");
+        for (var x = 1; x <= 9; x++){
+            document.write("<tr>");
+            for (var y = 1; y <= x; y++){
+                document.write("<td>" + x + "*" + y + "=" + (x * y) + "</td>");
+            }
+
+            // 空格
+            for (var y = 1; y <= 9 - x; y ++){
+                document.write("<td>&nbsp;</td>");
+            }
+
+            document.write("</tr>");
+        }
+        document.write("</table>");
+
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>
